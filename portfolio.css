@@ -1,0 +1,81 @@
+/* Base Reset */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Montserrat', sans-serif; }
+body { background:#f4f7f9; color:#333; }
+
+/* Navbar */
+nav { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#0d6efd; color:#fff; position:sticky; top:0; z-index:10; }
+nav h1 { font-size:1.8rem; font-weight:bold; }
+nav ul { display:flex; gap:1.5rem; list-style:none; }
+nav ul li a { color:#fff; text-decoration:none; font-weight:500; }
+nav ul li a.active, nav ul li a:hover { color:#ffd700; }
+
+/* Hero Section */
+.hero { text-align:center; padding:4rem 2rem; background:linear-gradient(135deg,#0d6efd,#ffd700); color:#fff; }
+.hero h1 { font-size:2.8rem; margin-bottom:1rem; }
+.hero p { font-size:1.2rem; margin-bottom:1.5rem; max-width:700px; margin:0 auto; }
+.hero-actions { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+.cta-btn, .cta-btn-outline { padding:0.8rem 2rem; font-size:1rem; border-radius:30px; font-weight:bold; cursor:pointer; transition:0.3s; }
+.cta-btn { border:none; background:#ffd700; color:#0d6efd; }
+.cta-btn-outline { border:2px solid #ffd700; color:#ffd700; background:transparent; }
+.cta-btn:hover { background:#fff; transform:scale(1.05); }
+.cta-btn-outline:hover { background:#ffd700; color:#fff; transform:scale(1.05); }
+/* Portfolio Add Asset Button - DEAS Theme */
+.btn-add-asset {
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #ffd700, #ffbf00); /* DEAS yellow gradient */
+  color: #0d6efd; /* DEAS blue text */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.btn-add-asset:hover {
+  background: linear-gradient(135deg, #ffbf00, #ffd700); /* reverse gradient on hover */
+  transform: scale(1.05); /* subtle zoom effect */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.btn-add-asset:active {
+  transform: scale(0.98); /* button press effect */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+/* Portfolio Summary Cards */
+.portfolio-summary { display:flex; justify-content:center; gap:1.5rem; margin:2rem auto; flex-wrap:wrap; }
+.summary-card { background:#fff; padding:2rem; border-radius:15px; flex:1 1 220px; max-width:250px; box-shadow:0 8px 20px rgba(0,0,0,0.1); text-align:center; transition:0.3s; }
+.summary-card:hover { transform:translateY(-5px); box-shadow:0 12px 25px rgba(0,0,0,0.15);}
+.summary-card h3 { color:#0d6efd; margin-bottom:0.5rem; }
+.summary-card p { font-size:1.3rem; font-weight:bold; }
+
+/* Portfolio Charts */
+.portfolio-charts { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin:3rem 0; }
+.chart-container { background:#fff; padding:1.5rem; border-radius:15px; flex:1 1 300px; box-shadow:0 8px 20px rgba(0,0,0,0.1); }
+.chart-container h3 { color:#0d6efd; margin-bottom:1rem; text-align:center; }
+
+/* Portfolio Table */
+.portfolio-table-section { padding:2rem; max-width:1200px; margin:0 auto; }
+.portfolio-table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.05); }
+.portfolio-table th, .portfolio-table td { padding:12px 15px; text-align:center; border-bottom:1px solid #ddd; }
+.portfolio-table th { background:#0d6efd; color:#fff; font-weight:600; }
+.portfolio-table tr:nth-child(even) { background:#f9f9f9; }
+.portfolio-table tr:hover { background:#f1f1f1; }
+
+/* Footer */
+footer { background:#0d6efd; color:#fff; text-align:center; padding:2rem; }
+footer a { color:#fff; text-decoration:none; margin:0 0.5rem; }
+footer a:hover { color:#ffd700; }
+
+/* Responsive */
+@media(max-width:768px){
+  .hero h1 { font-size:2rem; }
+  .cta-btn, .cta-btn-outline { width:80%; }
+  .portfolio-summary { flex-direction:column; align-items:center; }
+  .portfolio-charts { flex-direction:column; }
+  .chart-container { max-width:90%; margin:0 auto; }
+  .portfolio-table th, .portfolio-table td { font-size:0.85rem; padding:8px; }
+}

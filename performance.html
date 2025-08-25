@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEAS | Performance</title>
+  <link rel="stylesheet" href="performance.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <h1>DEAS</h1>
+    <ul>
+      <li><a href="deas.html">Home</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="performance.html" class="active">Performance</a></li>
+      <li><a href="search.html">Search</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li id="authLink"><a href="login.html" class="get-started">Get Started</a></li>
+    </ul>
+  </nav>
+
+  <main class="performance-container">
+    <h2>📊 Portfolio Performance Dashboard</h2>
+    <p>Track your portfolio growth, analyze trends, and make smarter investments.</p>
+
+    <!-- Filter Buttons -->
+    <div class="timeframe-filters">
+      <button data-period="weekly" class="active">Weekly</button>
+      <button data-period="monthly">Monthly</button>
+      <button data-period="yearly">Yearly</button>
+      <button data-period="all">All Time</button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-cards">
+      <div class="card">
+        <img src="https://img.icons8.com/ios-filled/50/0d6efd/money.png"/>
+        <h3>Total Value</h3>
+        <p>₹<span id="totalValue">0</span></p>
+      </div>
+      <div class="card">
+        <img src="https://img.freepik.com/premium-vector/profit-loss-icon-concept_313674-391.jpg"/>
+        <h3>Profit / Loss</h3>
+        <p><span id="profitLoss" class="profit">0</span></p>
+      </div>
+      <div class="card">
+        <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/stock-market-2547962-2135714.png"/>
+        <h3>Assets Tracked</h3>
+        <p><span id="assetCount">0</span></p>
+      </div>
+    </div>
+
+    <!-- Performance Table -->
+    <div class="table-container">
+      <table id="performanceTable">
+        <thead>
+          <tr>
+            <th>Time Period</th>
+            <th>Initial Value</th>
+            <th>Current Value</th>
+            <th>Profit / Loss</th>
+            <th>Growth (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamic rows filled by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-container">
+      <canvas id="performanceChart"></canvas>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 DEAS. All rights reserved.</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    // Sample dynamic data for demonstration
+    const portfolioData = {
+      weekly: {initial:50000, current:52500, assets:8},
+      monthly: {initial:45000, current:52500, assets:8},
+      yearly: {initial:30000, current:52500, assets:8},
+      all: {initial:10000, current:52500, assets:8},
+    };
+
+    const tableBody = document.querySelector("#performanceTable tbody");
+    const totalValue = document.getElementById("totalValue");
+    const profitLoss = document.getElementById("profitLoss");
+    const assetCount = document.getElementById("assetCount");
+
+    function updatePerformance(period){
+      const data = portfolioData[period];
+      const profit = data.current - data.initial;
+      const growth = ((profit / data.initial) * 100).toFixed(2);
+
+      // Update stats
+      totalValue.textContent = data.current.toLocaleString();
+      profitLoss.textContent = profit >=0 ? `+₹${profit.toLocaleString()}` : `-₹${Math.abs(profit).toLocaleString()}`;
+      profitLoss.className = profit >=0 ? 'profit' : 'loss';
+      assetCount.textContent = data.assets;
+
+      // Update table
+      tableBody.innerHTML = `
+        <tr>
+          <td>${period.charAt(0).toUpperCase() + period.slice(1)}</td>
+          <td>₹${data.initial.toLocaleString()}</td>
+          <td>₹${data.current.toLocaleString()}</td>
+          <td class="${profit>=0?'profit':'loss'}">${profit>=0?`+₹${profit.toLocaleString()}`:`-₹${Math.abs(profit).toLocaleString()}`}</td>
+          <td class="${profit>=0?'profit':'loss'}">${profit>=0?`+${growth}%`:`${growth}%`}</td>
+        </tr>
+      `;
+
+      // Update chart
+      performanceChart.data.datasets[0].data = [data.initial, data.current];
+      performanceChart.update();
+    }
+
+    // Initialize chart
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const performanceChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Initial', 'Current'],
+        datasets: [{
+          label: 'Portfolio Value (₹)',
+          data: [0,0],
+          borderColor: '#0d6efd',
+          backgroundColor: 'rgba(13,110,253,0.2)',
+          tension: 0.4,
+          fill: true,
+          pointRadius: 6
+        }]
+      },
+      options: {responsive:true, plugins:{legend:{display:false}}}
+    });
+
+    // Default load weekly
+    updatePerformance('weekly');
+
+    // Filter buttons
+    document.querySelectorAll('.timeframe-filters button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.timeframe-filters button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        updatePerformance(btn.dataset.period);
+      });
+    });
+  </script>
+  <script src="auth.js"></script>
+</body>
+</html>

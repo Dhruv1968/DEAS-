@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEAS | Portfolio</title>
+<link rel="stylesheet" href="portfolio.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <h1>DEAS</h1>
+  <ul>
+    <li><a href="deas.html">Home</a></li>
+    <li><a href="portfolio.html" class="active">Portfolio</a></li>
+    <li><a href="performance.html">Performance</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li id="authLink"><a href="login.html" class="get-started">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1>📊 My Portfolio</h1>
+  <p>Manage your investments, monitor gains, and track assets with real-time insights.</p>
+  <div class="hero-actions">
+    <button class="cta-btn" onclick="window.location.href='watchlist.html'">Go to Watchlist</button>
+    <!-- In portfolio.html -->
+<button class="btn-add-asset" onclick="window.location.href='add-asset.html'">
+  <span class="plus-icon">➕</span> Add New Asset
+</button>
+  </div>
+</section>
+
+<!-- Portfolio Summary Cards -->
+<section class="portfolio-summary">
+  <div class="summary-card">
+    <h3>Total Value</h3>
+    <p>₹<span id="totalValue">0</span></p>
+  </div>
+  <div class="summary-card">
+    <h3>Today's Gain/Loss</h3>
+    <p>₹<span id="todaysGain">0</span></p>
+  </div>
+  <div class="summary-card">
+    <h3>Assets Tracked</h3>
+    <p><span id="assetCount">0</span></p>
+  </div>
+  <div class="summary-card">
+    <h3>Average Return</h3>
+    <p><span id="avgReturn">0%</span></p>
+  </div>
+</section>
+
+<!-- Portfolio Charts -->
+<section class="portfolio-charts">
+  <div class="chart-container">
+    <h3>Portfolio Growth</h3>
+    <canvas id="lineChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <h3>Asset Allocation</h3>
+    <canvas id="pieChart"></canvas>
+  </div>
+</section>
+
+<!-- Detailed Assets Table -->
+<section class="portfolio-table-section">
+  <h2>Your Assets</h2>
+  <table class="portfolio-table">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Company</th>
+        <th>Sector</th>
+        <th>Quantity</th>
+        <th>Invested Value</th>
+        <th>Current Price</th>
+        <th>Market Value</th>
+        <th>Change</th>
+        <th>% Gain</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody id="assetTable">
+      <!-- JS will populate rows -->
+    </tbody>
+  </table>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 DEAS. All rights reserved.</p>
+</footer>
+
+<!-- JS to populate portfolio -->
+<script>
+const assets = [
+  {symbol:"RELIANCE.BSE", company:"Reliance Industries", sector:"Energy", qty:10, invested:24000, price:2450, change:"+12", percent:"+0.49%", updated:"22-Aug-2025"},
+  {symbol:"TCS.NSE", company:"Tata Consultancy", sector:"IT", qty:5, invested:17250, price:3500, change:"-15", percent:"-0.42%", updated:"22-Aug-2025"},
+  {symbol:"HDFCBANK.NSE", company:"HDFC Bank", sector:"Banking", qty:8, invested:12600, price:1600, change:"+10", percent:"+0.63%", updated:"22-Aug-2025"}
+];
+
+const assetTable = document.getElementById("assetTable");
+assets.forEach(asset=>{
+  const row = document.createElement("tr");
+  const marketValue = asset.qty * asset.price;
+  row.innerHTML=`
+    <td>${asset.symbol}</td>
+    <td>${asset.company}</td>
+    <td>${asset.sector}</td>
+    <td>${asset.qty}</td>
+    <td>₹${asset.invested}</td>
+    <td>₹${asset.price}</td>
+    <td>₹${marketValue}</td>
+    <td style="color:${asset.change.includes('+')?'green':'red'}">${asset.change}</td>
+    <td style="color:${asset.percent.includes('+')?'green':'red'}">${asset.percent}</td>
+    <td>${asset.updated}</td>
+  `;
+  assetTable.appendChild(row);
+});
+
+document.getElementById("totalValue").textContent = assets.reduce((sum,a)=>sum+a.qty*a.price,0);
+document.getElementById("todaysGain").textContent = assets.reduce((sum,a)=>sum+parseInt(a.change),0);
+document.getElementById("assetCount").textContent = assets.length;
+document.getElementById("avgReturn").textContent = ((assets.reduce((sum,a)=>sum+parseFloat(a.percent),0)/assets.length).toFixed(2))+'%';
+
+// Chart.js
+const lineCtx = document.getElementById('lineChart').getContext('2d');
+new Chart(lineCtx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May'],datasets:[{label:'Portfolio Value',data:[10000,12000,15000,14000,18000],borderColor:'#0d6efd',fill:false,tension:0.2}]}});
+const pieCtx = document.getElementById('pieChart').getContext('2d');
+new Chart(pieCtx,{type:'pie',data:{labels:['Reliance','TCS','HDFC Bank'],datasets:[{label:'Asset Allocation',data:[40,35,25],backgroundColor:['#0d6efd','#6c63ff','#ffd700']}]}});
+
+</script>
+<script src="auth.js"></script>
+
+</body>
+</html>
